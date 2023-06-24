@@ -1,0 +1,41 @@
+To run this server, type `npm install`
+Then type `npm run prod`
+
+Open one browser to `http://localhost:8000/`
+
+Open another browser tab to `http://localhost:8000/receiver.html`
+
+Update the values in `http://localhost:8000/` and watch them change in `http://localhost:8000/receiver.html`
+
+The data being sent to `http://localhost:8000/receiver.html`will look like this:
+
+```js
+{
+  "title": "This is the title for this block.",
+  "image": "https://cdn.masto.host/podcastindexsocial/accounts/avatars/000/015/466/original/1dcbcde7619f90a7.png",
+  "line": [
+    "this is line 1",
+    "this is line 2",
+    "this is line 3",
+    "this is line 4"
+  ],
+  "link": {
+    "text": "This is the text for the link",
+    "url": "https://podcastindex.social"
+  },
+  "description": "this would be an area for something like show notes",
+  "value": {
+    "type": "lightning",
+    "method": "keysend",
+    "destinations": {
+      "name": "The Split Kit",
+      "address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+      "customKey": "696969",
+      "customValue": "boPNspwDdt7axih5DfKs",
+      "split": "5",
+      "fee": "false"
+    }
+  },
+  "type": "person"
+}
+```

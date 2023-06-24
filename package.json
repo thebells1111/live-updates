@@ -1,0 +1,19 @@
+{
+  "name": "live-updates",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "prod": "node server.js",
+    "dev": "set DEV=true && nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^1.14.9",
+    "socket.io": "^4.7.0"
+  }
+}

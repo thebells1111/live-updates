@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Receiver</title>
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
+    <script>
+      // Connect to WebSocket
+      const socket = io("/event?event_id=your-guid-here");
+
+      // Function to handle incoming remoteValue events
+      socket.on("remoteValue", function (data) {
+        console.log(data);
+        // Convert object to pretty JSON and display in div
+        document.getElementById("output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Receiver</h1>
+    <pre id="output"></pre>
+  </body>
+</html>

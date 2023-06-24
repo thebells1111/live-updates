@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Form</title>
+  </head>
+  <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
+  <script>
+    // Connect to WebSocket
+
+    const socket = io("/event?event_id=your-guid-here");
+
+    function toNestedObject(obj) {
+      const result = {};
+
+      for (const [key, value] of Object.entries(obj)) {
+        const keyParts = key.split(/\[(.*?)\]/).filter(Boolean);
+        let currentPart = result;
+
+        keyParts.forEach((part, i) => {
+          if (i === keyParts.length - 1) {
+            currentPart[part] = value;
+          } else {
+            currentPart[part] = currentPart[part] || {};
+            currentPart = currentPart[part];
+          }
+        });
+      }
+
+      return result;
+    }
+
+    // Function to handle form submission
+    function submitForm(event) {
+      event.preventDefault();
+
+      // Form data to JSON
+      const formData = new FormData(event.target);
+      const flatData = Object.fromEntries(formData.entries());
+
+      // Get all the line fields as an array
+      flatData["line[]"] = formData.getAll("line[]");
+
+      const data = toNestedObject(flatData);
+      console.log(data);
+
+      // Send form data to WebSocket server
+      socket.emit("valueBlock", {
+        valueGuid: "your-guid-here",
+        serverData: data,
+      });
+    }
+
+    // Add event listener to form
+    window.addEventListener("DOMContentLoaded", (event) => {
+      const form = document.querySelector("form");
+      form.addEventListener("submit", submitForm);
+    });
+  </script>
+
+  <body>
+    <form>
+      <label for="title">Title:</label><br />
+      <input
+        type="text"
+        id="title"
+        name="title"
+        value="This is the title for this block."
+      /><br />
+
+      <label for="image">Image URL:</label><br />
+      <input
+        type="text"
+        id="image"
+        name="image"
+        value="https://cdn.masto.host/podcastindexsocial/accounts/avatars/000/015/466/original/1dcbcde7619f90a7.png"
+      /><br />
+
+      <label for="line">Lines:</label><br />
+      <input
+        type="text"
+        id="line1"
+        name="line[]"
+        value="this is line 1"
+      /><br />
+      <input
+        type="text"
+        id="line2"
+        name="line[]"
+        value="this is line 2"
+      /><br />
+      <input
+        type="text"
+        id="line3"
+        name="line[]"
+        value="this is line 3"
+      /><br />
+      <input
+        type="text"
+        id="line4"
+        name="line[]"
+        value="this is line 4"
+      /><br />
+
+      <label for="linkText">Link Text:</label><br />
+      <input
+        type="text"
+        id="linkText"
+        name="link[text]"
+        value="This is the text for the link"
+      /><br />
+
+      <label for="linkUrl">Link URL:</label><br />
+      <input
+        type="text"
+        id="linkUrl"
+        name="link[url]"
+        value="https://podcastindex.social"
+      /><br />
+
+      <label for="description">Description:</label><br />
+      <textarea id="description" name="description">
+this would be an area for something like show notes</textarea
+      ><br />
+
+      <h3>Value Block</h3>
+      <input type="hidden" name="value[type]" value="lightning" />
+      <input type="hidden" name="value[method]" value="keysend" />
+
+      <label for="name">Name:</label><br />
+      <input
+        type="text"
+        id="name"
+        name="value[destinations][name]"
+        value="The Split Kit"
+      /><br />
+
+      <label for="address">Address:</label><br />
+      <input
+        type="text"
+        id="address"
+        name="value[destinations][address]"
+        value="030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3"
+      /><br />
+
+      <label for="customKey">Custom Key:</label><br />
+      <input
+        type="text"
+        id="customKey"
+        name="value[destinations][customKey]"
+        value="696969"
+      /><br />
+
+      <label for="customValue">Custom Value:</label><br />
+      <input
+        type="text"
+        id="customValue"
+        name="value[destinations][customValue]"
+        value="boPNspwDdt7axih5DfKs"
+      /><br />
+
+      <label for="split">Split:</label><br />
+      <input
+        type="number"
+        id="split"
+        name="value[destinations][split]"
+        value="5"
+      /><br />
+
+      <label for="fee">Fee:</label><br />
+      <input
+        type="radio"
+        id="fee-true"
+        name="value[destinations][fee]"
+        value="true"
+      />
+      <label for="fee-true">True</label>
+      <input
+        type="radio"
+        id="fee-false"
+        name="value[destinations][fee]"
+        value="false"
+        checked
+      />
+      <label for="fee-false">False</label><br />
+
+      <label for="type">Type:</label>
+      <select name="type" id="type">
+        <option value="music">Music</option>
+        <option value="podcast">Podcast</option>
+        <option value="chapter">Chapter</option>
+        <option value="person" selected>Person</option>
+        <option value="poll">Poll</option>
+      </select>
+
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+
+  <style>
+    body {
+      width: 100vw;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
+      width: calc(100% - 64px);
+      margin: 2px 8px;
+    }
+
+    input[type="radio"] {
+      width: initial;
+      margin: 4px 8px;
+    }
+
+    h3 {
+      margin: 4px 0;
+    }
+  </style>
+</html>
