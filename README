@@ -27,14 +27,16 @@ The data being sent to `http://localhost:8000/receiver.html`will look like this:
   "value": {
     "type": "lightning",
     "method": "keysend",
-    "destinations": {
-      "name": "The Split Kit",
-      "address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-      "customKey": "696969",
-      "customValue": "boPNspwDdt7axih5DfKs",
-      "split": "5",
-      "fee": "false"
-    }
+    "destinations": [
+      {
+        "name": "The Split Kit",
+        "address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+        "customKey": "696969",
+        "customValue": "boPNspwDdt7axih5DfKs",
+        "split": "5",
+        "fee": "false"
+      }
+    ]    
   },
   "type": "person"
 }
