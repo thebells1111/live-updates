@@ -21,7 +21,11 @@ io.of("/event").on("connection", (socket) => {
   }
 
   remoteItems[guid].clients.add(socket.id);
-  broadcastMessage(guid, remoteItems[guid].valueBlock);
+
+  //send active valueBlock to new client
+  io.of("/event")
+    .to(socket.id)
+    .emit("remoteValue", remoteItems[guid].valueBlock);
 
   socket.on("disconnect", () => {
     for (let valueGuid in remoteItems) {
@@ -47,6 +51,7 @@ io.of("/event").on("connection", (socket) => {
 
   socket.on("valueBlock", async (data) => {
     const { serverData, valueGuid } = data;
+    remoteItems[valueGuid].valueBlock = serverData;
     broadcastMessage(valueGuid, serverData);
   });
 });
